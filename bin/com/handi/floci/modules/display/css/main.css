@@ -1,0 +1,89 @@
+.graph .node.degree10 rect, .graph .node.degree10 circle,
+.graph .node.degree09 rect, .graph .node.degree09 circle,
+.graph .node.degree08 rect, .graph .node.degree08 circle,
+.graph .node.degree07 rect, .graph .node.degree07 circle,
+.graph .node.degree06 rect, .graph .node.degree06 circle,
+.graph .node.degree05 rect, .graph .node.degree05 circle,
+.graph .node.degree04 rect, .graph .node.degree04 circle,
+.graph .node.degree03 rect, .graph .node.degree03 circle,
+.graph .node.degree02 rect, .graph .node.degree02 circle,
+.graph .node.degree01 rect, .graph .node.degree01 circle {
+/*	filter: "progid:DXImageTransform.Microsoft.Dropshadow(OffX=12, OffY=12, Color='#444')";
+	filter: url(#drop-shadow);
+	-webkit-filter: drop-shadow(0px 0px 5px #92A300);
+	filter: drop-shadow(0px 0px 5px #92A300);*/
+}
+
+.graph .node.degree10 rect, .graph .node.degree10 circle {
+	fill: #003600; /*rgb(85,107,47); */
+	stroke: #003600;
+}
+
+.graph .node.degree09 rect, .graph .node.degree09 circle {
+	fill: #003600; /*rgb(85,107,47); */
+	stroke: #003600;
+}
+
+.graph .node.degree08 rect, .graph .node.degree08 circle {
+	fill: #017500; 
+	stroke: #003600;
+}
+
+.graph .node.degree07 rect, .graph .node.degree07 circle {
+	fill: #017500; 
+	stroke: #003600;
+}
+
+.graph .node.degree06 rect, .graph .node.degree06 circle {
+	fill: #019C00; 
+	stroke: #003600;
+}
+
+.graph .node.degree05 rect, .graph .node.degree05 circle {
+	fill: #019C00; 
+	stroke: #003600;
+}
+
+.graph .node.degree04 rect, .graph .node.degree04 circle {
+	fill: #01B500; 
+	stroke: #003600;
+}
+
+.graph .node.degree03 rect, .graph .node.degree03 circle {
+	fill: #01B500; 
+	stroke: #003600;
+}
+
+.graph .node.degree02 rect, .graph .node.degree02 circle {
+	fill: #92A300; 
+	stroke: #003600;
+}
+
+.graph .node.degree01 rect, .graph .node.degree01 circle {
+	fill: #92A300; 
+	stroke: #003600;
+}
+
+
+.graph .node text.degree {
+	fill: #fff;
+}
+
+.graph .node.degree00 rect, .graph .node.degree00 circle {
+	fill: rgb(128,0,16); /*rgb(215,9,29); /*rgb(227,80,32);*/ 
+	stroke: rgb(200, 15, 18);
+/*
+		filter: "progid:DXImageTransform.Microsoft.Dropshadow(OffX=12, OffY=12, Color='#444')";
+	filter: url(#drop-shadow);
+	-webkit-filter: drop-shadow(0px 0px 5px rgb(240,131,0));
+	filter: drop-shadow(0px 0px 5px rgb(240,131,0));*/
+}
+
+.graph .node.degreeP rect, .graph .node.degreeP circle {
+	fill: rgb(240,131,0);
+	stroke: rgb(227, 80, 32);
+}
+
+body {
+	background-color: #404040; /*rgb(255,243,218); /*rgb(233,255,255); /*rgb(253,233,208); /*rgb(234,205,152);*/
+}

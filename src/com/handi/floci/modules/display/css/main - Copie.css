@@ -1,0 +1,48 @@
+.graph .node.degree10 rect, .graph .node.degree10 circle {
+	fill: #003600; /*rgb(85,107,47); */
+	stroke: #003600;
+}
+
+.graph .node.degree09 rect, .graph .node.degree09 circle {
+	fill: #017500; 
+	stroke: #003600;
+}
+
+.graph .node.degree08 rect, .graph .node.degree08 circle {
+	fill: #019C00; 
+	stroke: #003600;
+}
+
+.graph .node.degree07 rect, .graph .node.degree07 circle {
+	fill: rgb(85,107,47); 
+	stroke: #003600;
+}
+
+.graph .node.degree06 rect, .graph .node.degree06 circle {
+	fill: #01B500; 
+	stroke: #003600;
+}
+
+.graph .node.degree05 rect, .graph .node.degree05 circle {
+	fill: #01C200; 
+	stroke: #003600;
+}
+
+.graph .node.degree04 rect, .graph .node.degree04 circle {
+	fill: #01C200; 
+	stroke: #003600;
+}
+
+.graph .node.degree03 rect, .graph .node.degree03 circle {
+	fill: rgb(85,107,47); 
+	stroke: #003600;
+}
+
+.graph .node text.degree {
+	fill: #fff;
+}
+
+.graph .node.degree00 rect, .graph .node.degree00 circle {
+	fill: rgb(215,9,29); /*rgb(227,80,32);*/ 
+	stroke: rgb(200, 15, 18);
+}

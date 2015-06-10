@@ -1,0 +1,118 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.effect.*?>
+<?import javafx.geometry.*?>
+<?import javafx.scene.web.*?>
+<?import java.lang.*?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+<?import javafx.scene.layout.BorderPane?>
+
+<BorderPane minHeight="600.0" minWidth="800.0" styleClass="floci" stylesheets="@Darktheme.css" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.handi.floci.controller.MainController">
+   <center>
+      <SplitPane dividerPositions="0.2543859649122807" prefHeight="200.0" prefWidth="200.0" BorderPane.alignment="CENTER">
+         <items>
+            <SplitPane dividerPositions="0.5" maxWidth="250.0" orientation="VERTICAL" prefHeight="200.0" prefWidth="200.0" styleClass="background">
+              <items>
+                  <VBox alignment="TOP_CENTER" prefHeight="200.0" prefWidth="100.0">
+                     <children>
+                        <Label styleClass="specialLabel" text="Hiérarchie des Concepts">
+                           <VBox.margin>
+                              <Insets bottom="5.0" />
+                           </VBox.margin></Label>
+                        <TreeView fx:id="hierarchyTree" styleClass="background" VBox.vgrow="ALWAYS" />
+                     </children>
+                  </VBox>
+                  <VBox alignment="TOP_CENTER" prefHeight="200.0" prefWidth="100.0">
+                     <children>
+                        <Label alignment="CENTER" contentDisplay="CENTER" styleClass="specialLabel" text="Liste des Individus" textAlignment="CENTER">
+                           <VBox.margin>
+                              <Insets bottom="5.0" />
+                           </VBox.margin></Label>
+                        <ListView fx:id="individualsList" styleClass="background" VBox.vgrow="ALWAYS" />
+                        <Button mnemonicParsing="false" onAction="#classifySelectedIndividual" text="Classifier l'individu">
+                           <styleClass>
+                              <String fx:value="specialButton" />
+                              <String fx:value="specialButton2" />
+                           </styleClass>
+                           <VBox.margin>
+                              <Insets bottom="5.0" />
+                           </VBox.margin>
+                        </Button>
+                     </children>
+                  </VBox>
+              </items>
+            </SplitPane>
+            <WebView fx:id="webview" prefHeight="573.0" prefWidth="689.0" />
+         </items>
+      </SplitPane>
+   </center>
+   <top>
+      <HBox BorderPane.alignment="CENTER">
+         <children>
+            <MenuBar>
+              <menus>
+                <Menu mnemonicParsing="false" text="Fichier">
+                  <items>
+                        <Menu mnemonicParsing="false" text="Charger une Ontologie">
+                          <items>
+                            <MenuItem mnemonicParsing="false" text="Ouvrir fichier" />
+                              <SeparatorMenuItem mnemonicParsing="false" />
+                              <MenuItem mnemonicParsing="false" text="OntAnalyse" />
+                              <MenuItem mnemonicParsing="false" text="Matchmaking" />
+                              <MenuItem mnemonicParsing="false" text="Fuzzy Wine" />
+                          </items>
+                        </Menu>
+                        <MenuItem mnemonicParsing="false" text="Sauvgarder" />
+                    <MenuItem mnemonicParsing="false" text="Fermer" />
+                  </items>
+                </Menu>
+                <Menu mnemonicParsing="false" text="Raisonneur">
+                  <items>
+                        <CheckMenuItem fx:id="checkSFR" mnemonicParsing="false" onAction="#changeReasonnerToSFR" selected="true" text="Raisonneur SFR" />
+                        <CheckMenuItem fx:id="checkFuzzyDL" mnemonicParsing="false" onAction="#changeReasonnerToFuzzyDL" text="Raisonneur FuzzyDL" />
+                  </items>
+                </Menu>
+                  <Menu mnemonicParsing="false" text="Affichage">
+                     <items>
+                        <Menu mnemonicParsing="false" text="Type d'affichage">
+                           <items>
+                              <CheckMenuItem fx:id="checkVertical" mnemonicParsing="false" onAction="#changeAffichageToVertical" selected="true" text="Vertical" />
+                              <CheckMenuItem fx:id="checkHorizontal" mnemonicParsing="false" onAction="#changeAffichageToHorizontal" text="Horizontal" />
+                              <CheckMenuItem fx:id="checkCircular" mnemonicParsing="false" onAction="#changeAffichageToCircular" text="Circulair" />
+                           </items>
+                        </Menu>
+                        <Menu mnemonicParsing="false" text="Palette de couleurs">
+                          <items>
+                            <MenuItem mnemonicParsing="false" text="Action 1" />
+                          </items>
+                        </Menu>
+                     </items>
+                  </Menu>
+                <Menu mnemonicParsing="false" text="Aide">
+                  <items>
+                    <MenuItem mnemonicParsing="false" text="About" />
+                  </items>
+                </Menu>
+              </menus>
+            </MenuBar>
+            <HBox alignment="CENTER" HBox.hgrow="ALWAYS">
+               <children>
+                  <Button fx:id="uploadOntologyButton" mnemonicParsing="false" onAction="#uploadOntology" styleClass="specialButton" text="Charger une Ontologie">
+                     <HBox.margin>
+                        <Insets left="10.0" right="10.0" />
+                     </HBox.margin></Button>
+                  <Button mnemonicParsing="false" onAction="#clickShowCreateIndividualWindow" styleClass="specialButton" text="Ajouter un Individu">
+                     <HBox.margin>
+                        <Insets />
+                     </HBox.margin></Button>
+                  <Button mnemonicParsing="false" onAction="#clickShowEditIndividualWindow" styleClass="specialButton" text="Modifier un Individu">
+                     <HBox.margin>
+                        <Insets left="10.0" right="10.0" />
+                     </HBox.margin></Button>
+               </children>
+            </HBox>
+         </children>
+      </HBox>
+   </top>
+</BorderPane>
