@@ -63,10 +63,18 @@
                               <MenuItem mnemonicParsing="false" text="Fuzzy Wine" />
                           </items>
                         </Menu>
-                        <MenuItem mnemonicParsing="false" text="Sauvgarder" />
+                        <MenuItem mnemonicParsing="false" onAction="#returnToAccueilPage" text="Page d'accueil" />
                     <MenuItem mnemonicParsing="false" text="Fermer" />
                   </items>
                 </Menu>
+                  <Menu mnemonicParsing="false" text="Edition">
+                    <items>
+                      <MenuItem mnemonicParsing="false" onAction="#clickShowCreateIndividualWindow" text="Ajouter un Individu" />
+                        <MenuItem mnemonicParsing="false" onAction="#clickShowEditIndividualWindow" text="Modifier l'individu" />
+                        <MenuItem mnemonicParsing="false" onAction="#deleteSelectedIndividual" text="Supprimer l'individu" />
+                        <MenuItem mnemonicParsing="false" onAction="#classifySelectedIndividual" text="Classifier l'individu" />
+                    </items>
+                  </Menu>
                 <Menu mnemonicParsing="false" text="Raisonneur">
                   <items>
                         <CheckMenuItem fx:id="checkSFR" mnemonicParsing="false" onAction="#changeReasonnerToSFR" selected="true" text="Raisonneur SFR" />
@@ -84,7 +92,7 @@
                         </Menu>
                         <Menu mnemonicParsing="false" text="Palette de couleurs">
                           <items>
-                            <MenuItem mnemonicParsing="false" text="Action 1" />
+                            <MenuItem mnemonicParsing="false" text="Theme Noir" />
                           </items>
                         </Menu>
                      </items>
@@ -112,6 +120,12 @@
                      </HBox.margin></Button>
                </children>
             </HBox>
+            <VBox alignment="CENTER">
+               <children>
+                  <Label styleClass="specialButton" text="Zoom" />
+                  <Slider fx:id="zoomSlider" majorTickUnit="50.0" minorTickCount="4" showTickMarks="true" snapToTicks="true" />
+               </children>
+            </VBox>
          </children>
       </HBox>
    </top>

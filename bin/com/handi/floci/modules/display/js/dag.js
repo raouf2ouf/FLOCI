@@ -14,3 +14,7 @@ window.onload = function() {
 
 	});
 };
+
+function zoomia(sc) {
+	window.dag.zoomage(sc);
+}

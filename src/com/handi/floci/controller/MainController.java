@@ -22,6 +22,7 @@ import javafx.scene.control.CheckMenuItem;
 import javafx.scene.control.ListCell;
 import javafx.scene.control.ListView;
 import javafx.scene.control.Menu;
+import javafx.scene.control.Slider;
 import javafx.scene.control.TreeView;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.web.WebView;
@@ -37,6 +38,7 @@ import org.controlsfx.dialog.Dialogs;
 import org.json.simple.JSONObject;
 import org.semanticweb.owlapi.apibinding.OWLManager;
 import org.semanticweb.owlapi.model.IRI;
+import org.semanticweb.owlapi.model.OWLAxiom;
 import org.semanticweb.owlapi.model.OWLClass;
 import org.semanticweb.owlapi.model.OWLClassAssertionAxiom;
 import org.semanticweb.owlapi.model.OWLDataFactory;
@@ -64,14 +66,26 @@ import fuzzydl.parser.Parser;
 import fuzzyowl2.FuzzyOwl2;
 
 public class MainController {
+	static final String ACCUEIL = "file:/D:/Development/Workspace/Java/FLOCI/src/com/handi/floci/modules/display/index.html";
+	static final String VERTICAL_SHOW_PAGE = "file:/D:/Development/Workspace/Java/FLOCI/src/com/handi/floci/modules/display/dag.html";
+	static final String HORIZONTAL_SHOW_PAGE = "file:/D:/Development/Workspace/Java/FLOCI/src/com/handi/floci/modules/display/show/dagH";
+	static final String CIRCULAR_SHOW_PAGE = "file:/D:/Development/Workspace/Java/FLOCI/src/com/handi/floci/modules/display/show/dagC";
+	
+	static final int VERTICAL_SHOW = 0;
+	static final int HORIZONTAL_SHOW = 1;
+	static final int CIRCULAR_SHOW = 2;
+	
 	static final int REASONER_SFR = 0;
 	static final int REASONER_FUZZYDL = 1;
 	
+	private String showPage = VERTICAL_SHOW_PAGE;
 	private HierarchyGenerator hierarchyGenerator;
 	private String ontologyIRI;
 	public KnowledgeBase kb;
-	private int reasonerType;
-	private String affichageType;
+	
+	private int reasonerType = REASONER_SFR;;
+	private int affichageType;
+	
 	
     @FXML private TreeView<String> hierarchyTree;
     @FXML private ListView<OWLNamedIndividual> individualsList;
@@ -82,6 +96,8 @@ public class MainController {
     @FXML private CheckMenuItem checkVertical;
     @FXML private CheckMenuItem checkHorizontal;
     @FXML private CheckMenuItem checkCircular;
+    
+    @FXML private Slider zoomSlider;
     /**
      * The constructor.
      * The constructor is called before the initialize() method.
@@ -92,14 +108,8 @@ public class MainController {
      * Initializes the controller class. This method is automatically called
      * after the fxml file has been loaded.
      */
-    @FXML private void initialize() {
-    	//String url = Main.class.getResource("modules/display/dag.html").toExternalForm(); 
-    	//webview.getEngine().load("file:/D:/Development/Workspace/Java/FLOCI/src/com/handi/floci/modules/display/index.html");
-    	webview.getEngine().load("file:/D:/Development/Workspace/Java/FLOCI/src/com/handi/floci/modules/display/children.html");
-    	
-    	// raisonneur SFR par defaut
-    	//reasonerType = REASONER_SFR;
-    	reasonerType = REASONER_SFR;
+    @FXML private void initialize() { 
+    	webview.getEngine().load(ACCUEIL);
     	
     	individualsList.setCellFactory(new Callback<ListView<OWLNamedIndividual>, ListCell<OWLNamedIndividual>>(){
 			@Override
@@ -119,6 +129,17 @@ public class MainController {
 			}
     	});
 
+    	
+    	zoomSlider.valueProperty().addListener(new ChangeListener<Number>() {
+    	      @Override public void changed(ObservableValue<? extends Number> observableValue, Number oldValue, Number newValue) {
+    	          if (newValue != null) {
+    	        	  int value = newValue.intValue();
+    	        	  if(value % 10 == 0) {
+	    	            webview.getEngine().executeScript("zoomia(" +value+")");
+    	        	  }
+    	          }
+    	        }
+    	      });
     }
     
     @FXML protected void uploadOntology(ActionEvent event) {   	
@@ -138,7 +159,9 @@ public class MainController {
 			hierarchyGenerator.getConceptsHierarchy(hierarchyTree);
 			
 			// Rafrechir l'affichage
-			webview.getEngine().load("file:/D:/Development/Workspace/Java/FLOCI/src/com/handi/floci/modules/display/dag.html");
+			setShowpage();
+			System.out.println(showPage);
+			webview.getEngine().load(showPage);
 			
 			kb = null;
 			
@@ -146,11 +169,11 @@ public class MainController {
 			showIndividuals();
 
 		} catch (OWLOntologyCreationException e) {
-			e.printStackTrace();
+			//e.printStackTrace();
 		} catch (Exception e) {
 			// Get Individuals
 			showIndividuals();
-			e.printStackTrace();
+			//e.printStackTrace();
 		}
 		
     }
@@ -160,7 +183,7 @@ public class MainController {
     	OWLDataFactory factory = hierarchyGenerator.getOntologyManager().getOWLDataFactory();
     	
     	Optional<String> response = Dialogs.create()
-    	        .owner(((Node)event.getSource()).getScene().getWindow())
+    	        .owner(uploadOntologyButton.getScene().getWindow())
     	        .title("Ajouter un nouvel Individu")
     	        .masthead(null)
     	        .message("Nom du nouvel individu: ")
@@ -180,7 +203,7 @@ public class MainController {
 	    		showIndividualsWindow(event, individu, false);
     		} else {
         		Dialogs.create()
-                .owner(((Node)event.getSource()).getScene().getWindow())
+                .owner(uploadOntologyButton.getScene().getWindow())
                 .title("Erreur")
                 .masthead(null)
                 .message("Ooops, Le nom de l'individu ne peut pas être vide!")
@@ -202,7 +225,7 @@ public class MainController {
     	if(individu != null) showIndividualsWindow(event, individu, true);
     	else {
 			Dialogs.create()
-            .owner(((Node)event.getSource()).getScene().getWindow())
+            .owner(uploadOntologyButton.getScene().getWindow())
             .title("Erreur")
             .masthead(null)
             .message("Ooops, il n'existe aucun individus dans cette Ontologie!")
@@ -228,8 +251,7 @@ public class MainController {
 	        
 	        stage.setTitle("Création d'un nouvel individu");
 	        stage.initModality(Modality.WINDOW_MODAL);
-	        stage.initOwner(
-	            ((Node)event.getSource()).getScene().getWindow() );
+	        stage.initOwner(uploadOntologyButton.getScene().getWindow());
 	        stage.setOnCloseRequest(new EventHandler<WindowEvent>() {
 				@Override
 				public void handle(WindowEvent event) {
@@ -238,7 +260,7 @@ public class MainController {
 					} catch (OWLOntologyCreationException e) {
 						e.printStackTrace();
 					}
-					showIndividuals();
+					//showIndividuals();
 				}
 	        });
 	        stage.show();
@@ -271,7 +293,8 @@ public class MainController {
 					e1.printStackTrace();
 				}
 			}
-			webview.getEngine().load("file:/D:/Development/Workspace/Java/FLOCI/src/com/handi/floci/modules/display/dag.html");
+			System.out.println(showPage);
+			webview.getEngine().load(showPage);
 		} catch(Exception e) {
 			e.printStackTrace();
 		}
@@ -313,14 +336,55 @@ public class MainController {
 				displayer.calculateMembershipSFR(individu);
 			}
 	    	
-	    	webview.getEngine().reload();
+	    	webview.getEngine().load(showPage);
     	} else {
     		Dialogs.create()
-        	        .owner(((Node)event.getSource()).getScene().getWindow())
+        	        .owner(uploadOntologyButton.getScene().getWindow())
         	        .title("Classification d'un individu")
         	        .message("Aucun Individu séléctionné!")
         	        .showInformation();
     	}
+    }
+    
+    @SuppressWarnings("deprecation")
+	@FXML protected void deleteSelectedIndividual(ActionEvent event) {
+    	OWLNamedIndividual individu = individualsList.getSelectionModel().getSelectedItem();
+    	if(individu != null) {
+    		@SuppressWarnings("deprecation")
+			Action response = Dialogs.create()
+        	        .owner(uploadOntologyButton.getScene().getWindow())
+        	        .title("Confirmer la suppression de l'individu")
+        	        .masthead("La suppression d'un Individu est irréversible!")
+        	        .message("Etes vous sur de vouloir supprimer l'individu " + individu.getIRI().getFragment() +"?")
+        	        .actions(Dialog.ACTION_OK, Dialog.ACTION_CANCEL)
+        	        .showConfirm();
+
+        	if (response == Dialog.ACTION_OK) {
+	    		for(OWLAxiom axiom : this.hierarchyGenerator.getOntology().getAxioms(individu)) {
+	    			hierarchyGenerator.getOntologyManager().removeAxiom(hierarchyGenerator.getOntology(), axiom);
+	        	}
+	    		
+	    		try {
+	    			hierarchyGenerator.getOntologyManager().saveOntology(hierarchyGenerator.getOntology());
+	    			
+	    			hierarchyGenerator.reload();
+	    			
+	    			kb = null;
+	    			showIndividuals();
+	    			
+	    			showCleanHierarchyInWebview();
+	    		} catch (Exception e) {
+	    			e.printStackTrace();
+	    		}
+        	}
+    	} else {
+    		Dialogs.create()
+        	        .owner(uploadOntologyButton.getScene().getWindow())
+        	        .title("Classification d'un individu")
+        	        .message("Aucun Individu séléctionné!")
+        	        .showInformation();
+    	}
+    	
     }
     
     @FXML protected void changeReasonnerToSFR(ActionEvent event) {
@@ -339,18 +403,55 @@ public class MainController {
     	checkVertical.setSelected(true);
     	checkHorizontal.setSelected(false);
     	checkCircular.setSelected(false);
-    	affichageType = "";
+    	affichageType = VERTICAL_SHOW;
+    	setShowpage();
     }
     @FXML protected void changeAffichageToHorizontal(ActionEvent event) {
     	checkVertical.setSelected(false);
     	checkHorizontal.setSelected(true);
     	checkCircular.setSelected(false);
-    	affichageType = "";
+    	affichageType = HORIZONTAL_SHOW;
+    	setShowpage();
     }
     @FXML protected void changeAffichageToCircular(ActionEvent event) {
     	checkVertical.setSelected(false);
     	checkHorizontal.setSelected(false);
     	checkCircular.setSelected(true);
-    	affichageType = "";
+    	affichageType = CIRCULAR_SHOW;
+    	setShowpage();
+    }
+    
+    @FXML protected void returnToAccueilPage() {
+    	webview.getEngine().load(ACCUEIL);
+    }
+    
+    private void setShowpage() {
+    	if(this.ontologyIRI == null) {
+    		returnToAccueilPage();
+    		return;
+    	}
+    	if(this.ontologyIRI.contains("neumo")) {
+    		switch(this.affichageType) {
+    			case 0: showPage = VERTICAL_SHOW_PAGE; break;
+    			case 1: showPage = HORIZONTAL_SHOW_PAGE + "neumo.html"; break;
+    			case 2: showPage = CIRCULAR_SHOW_PAGE + "neumo.html"; break;
+    		}
+    	} else if(this.ontologyIRI.contains("5484")) {
+    		switch(this.affichageType) {
+				case 0: showPage = VERTICAL_SHOW_PAGE; break;
+				case 1: showPage = HORIZONTAL_SHOW_PAGE + "match.html"; break;
+				case 2: showPage = CIRCULAR_SHOW_PAGE + "match.html"; break;
+    		}
+    	} else if(this.ontologyIRI.contains("wine")) {
+    		switch(this.affichageType) {
+				case 0: showPage = VERTICAL_SHOW_PAGE; break;
+				case 1: showPage = HORIZONTAL_SHOW_PAGE + "wine.html"; break;
+				case 2: showPage = CIRCULAR_SHOW_PAGE + "wine.html"; break;
+    		}
+    	} else {
+    		showPage = VERTICAL_SHOW_PAGE; 
+    	}
+    	System.out.println(showPage);
+		webview.getEngine().load(showPage);
     }
 }

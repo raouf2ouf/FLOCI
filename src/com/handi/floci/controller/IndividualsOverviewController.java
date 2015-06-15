@@ -420,6 +420,7 @@ public class IndividualsOverviewController {
 					// reafficher la liste d'axioms de l'individu
 					showIndividualAxioms();
 	    		}
+	    		valueField.clear();
     		}
     	} else {
     		OWLObjectProperty property = propertiesList.getSelectionModel().getSelectedItem();
@@ -445,6 +446,7 @@ public class IndividualsOverviewController {
     		}
     	}
     }
+    
     @SuppressWarnings("deprecation")
     @FXML protected void clickRemoveAxiom(ActionEvent event) {
 		Action response = Dialogs.create()

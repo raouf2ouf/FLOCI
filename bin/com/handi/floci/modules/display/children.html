@@ -5,14 +5,51 @@
     <link rel="stylesheet" href="css/children.css">
     <script type="text/javascript" src="js/d3.v3.min.js"></script>
   </head>
-  <body>
-    <script>
+  <body><!---->
+      <script>
+    function drawMembershipDegree(degrees) {
+         // Transforming the degrees array to a map
+        var degrees_map = {};
+        degrees.forEach(function(degreeObject) {
+            degrees_map[degreeObject.name] = degreeObject.degree;
+        }); 
 
+        // for each node change add the memebership degree
+        var nodes = svg.selectAll("g.node");
+        
+        nodes.data().forEach(function(d) { 
+            d.degree = degrees_map[d.name];
+        });
+
+        // depending on the memebership degree add class
+        nodes.classed("degree00", function(d) { return (d.degree <= 0.0); });
+        nodes.classed("degree01", function(d) { return (d.degree >= 0.0 && d.degree < 0.1); });
+        nodes.classed("degree02", function(d) { return (d.degree >= 0.1 && d.degree < 0.2); });
+        nodes.classed("degree03", function(d) { return (d.degree >= 0.2 && d.degree < 0.3); });
+        nodes.classed("degree04", function(d) { return (d.degree >= 0.3 && d.degree < 0.4); });
+        nodes.classed("degree05", function(d) { return (d.degree >= 0.4 && d.degree < 0.5); });
+        nodes.classed("degree06", function(d) { return (d.degree >= 0.5 && d.degree < 0.6); });
+        nodes.classed("degree07", function(d) { return (d.degree >= 0.6 && d.degree < 0.7); });
+        nodes.classed("degree08", function(d) { return (d.degree >= 0.7 && d.degree < 0.8); });
+        nodes.classed("degree09", function(d) { return (d.degree >= 0.8 && d.degree < 0.9); });
+        nodes.classed("degree10", function(d) { return (d.degree >= 0.9 && d.degree <= 1.0); });
+        nodes.classed("degreeP", function(d) { return (d.degree > 1.0); });
+
+        nodes.append("text")
+              .attr("class", "degree")
+              .attr("x", 0)
+              .attr("dy", 3)
+              .attr("text-anchor", "middle")/*function(d) { return d.children ? "end" : "start"; })*/
+              .text(function(d) { return (d.degree > 1.0) ? "P" : d.degree; }); 
+    }
+    </script>
+
+  <!--  <script>
     var width = 1200, /*960*/
         height = 3000/*2000*/;
 
     var tree = d3.layout.tree()
-        .size([height, width - 160]);
+        .size([height, width - 180]);
 
     var diagonal = d3.svg.diagonal()
         .projection(function(d) { return [d.y, d.x]; });
@@ -21,7 +58,7 @@
         .attr("width", width)
         .attr("height", height)
       .append("g")
-        .attr("transform", "translate(40,0)");
+        .attr("transform", "translate(60,0)");
 
     d3.json("children.json", function(error, json) {
       var nodes = tree.nodes(json),
@@ -40,19 +77,28 @@
           .attr("transform", function(d) { return "translate(" + d.y + "," + d.x + ")"; })
 
       node.append("circle")
-          .attr("r", 4.5);
+          .attr("r", 10);
 
       node.append("text")
-          .attr("dx", function(d) { return d.children ? -8 : 8; })
+          .attr("dx", function(d) { return d.children ? -15 : 15; })
           .attr("dy", 3)
           .attr("text-anchor", function(d) { return d.children ? "end" : "start"; })
           .text(function(d) { return d.name; });
+
+      d3.json("degrees.json", function(error, degrees) {
+         drawMembershipDegree(degrees);
+    });
+
     });
 
     d3.select(self.frameElement).style("height", height + "px");
+    
 
-    </script>
-<!--
+
+    
+
+    </script>-->
+
     <script>
 
 var diameter = 1800;
@@ -66,37 +112,57 @@ var diagonal = d3.svg.diagonal.radial()
 
 var svg = d3.select("body").append("svg")
     .attr("width", diameter)
-    .attr("height", diameter - 150)
+    .attr("height", diameter + 300)
   .append("g")
     .attr("transform", "translate(" + diameter / 2 + "," + diameter / 2 + ")");
 
 d3.json("children.json", function(error, root) {
   var nodes = tree.nodes(root),
       links = tree.links(nodes);
+  d3.json("children_links.json", function(error, liens) {
+        var hashmap = {};
 
-  var link = svg.selectAll(".link")
-      .data(links)
-    .enter().append("path")
-      .attr("class", "link")
-      .attr("d", diagonal);
+        nodes.forEach(function(node) {
+          hashmap[node.name] = node;
+        });
 
-  var node = svg.selectAll(".node")
-      .data(nodes)
-    .enter().append("g")
-      .attr("class", "node")
-      .attr("transform", function(d) { return "rotate(" + (d.x - 90) + ")translate(" + d.y + ")"; })
+        liens.forEach(function(lien) {
+          console.log("Source :" + lien.source.name );
+          lien.source = hashmap[lien.source.name];
+          lien.target = hashmap[lien.target.name];
+          console.log("source");
+          console.log("push :" + lien.source.name + " x: " + lien.source.x);
+          links.push(lien)
+        });
 
-  node.append("circle")
-      .attr("r", 4.5);
+        var link = svg.selectAll(".link")
+            .data(links)
+          .enter().append("path")
+            .attr("class", "link")
+            .attr("d", diagonal);
 
-  node.append("text")
-      .attr("dy", ".31em")
-      .attr("text-anchor", function(d) { return d.x < 180 ? "start" : "end"; })
-      .attr("transform", function(d) { return d.x < 180 ? "translate(8)" : "rotate(180)translate(-8)"; })
-      .text(function(d) { return d.name; });
+        var node = svg.selectAll(".node")
+            .data(nodes)
+          .enter().append("g")
+            .attr("class", "node")
+            .attr("transform", function(d) { return "rotate(" + (d.x - 90) + ")translate(" + d.y + ")"; })
+
+        node.append("circle")
+            .attr("r", 10);
+
+        node.append("text")
+            .attr("dy", ".31em")
+            .attr("text-anchor", function(d) { return d.x < 180 ? "start" : "end"; })
+            .attr("transform", function(d) { return d.x < 180 ? "translate(15)" : "rotate(180)translate(-15)"; })
+            .text(function(d) { return d.name; });
+        
+       d3.json("degrees.json", function(error, degrees) {
+               drawMembershipDegree(degrees);
+      });
+  });
 });
 
 d3.select(self.frameElement).style("height", diameter - 150 + "px");
 
-</script>-->
+</script><!---->
   </body>

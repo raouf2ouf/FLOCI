@@ -5,7 +5,6 @@ public class Parser {
 	private int i;
 	private String type;
 	public Parser(String s) {
-		System.out.println("Parsage de : " + s);
 		try {
 			i = s.indexOf(" type") + 5;
 			
@@ -16,7 +15,6 @@ public class Parser {
 				type += s.charAt(i);
 				i++;
 			}
-			System.out.println("type = " + type);
 			// à ce stade on a le type 
 			a = readParameter(s, 'a'); // à ce stade on a le A
 			b = readParameter(s, 'b'); // à ce stade on a le B
@@ -43,7 +41,6 @@ public class Parser {
 			cString += s.charAt(i);
 			i++;
 		}
-		System.out.println("Parsing " + c + "=  " + cString);
 		return Double.parseDouble(cString);
 	}
 	

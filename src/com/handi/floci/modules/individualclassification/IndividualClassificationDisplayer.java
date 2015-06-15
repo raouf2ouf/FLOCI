@@ -48,13 +48,11 @@ public class IndividualClassificationDisplayer {
 				Concept c = kb.getConcept(clazz.getIRI().getFragment());
 				Query query = new MinInstanceQuery(c,i);
 				Solution result = query.solve(kb);
-				if(result == null) System.out.println(" result null");
-				else {
+				if(result != null) {
 					JSONObject degre = new JSONObject();
 					degre.put("name", c.toString());
 					degre.put("degree", result.getSolution());
 					degrees.add(degre);
-					System.out.println(c.toString() + " : " + result.getSolution());
 				}
 			}
 			
@@ -90,7 +88,6 @@ public class IndividualClassificationDisplayer {
 	public void calculateMembershipSFR(OWLNamedIndividual individu) {
 		HashMap<String, Double> hashmap = fuzzyReasoner.calculateTruthDegree(individu);
 		Reasoner reasoner = fuzzyReasoner.getCrispReasoner();
-		System.out.println(individu.getIRI().getFragment());
 		
 		for(String clazzName : hashmap.keySet()) {
 			if(hashmap.get(clazzName) == 1.0) {
@@ -128,7 +125,6 @@ public class IndividualClassificationDisplayer {
 			degre.put("name", clazzName);
 			degre.put("degree", hashmap.get(clazzName));
 			degrees.add(degre);
-			System.out.println("Class: " + clazzName + " , Degree: " + hashmap.get(clazzName));
 		}
 		
 		

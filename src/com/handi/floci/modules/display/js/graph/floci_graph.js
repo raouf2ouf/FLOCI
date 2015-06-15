@@ -8,7 +8,7 @@ function FLOCIDAG(attachPoint, nodes, links, /*optional*/ params) {
     // Twiddle the attach point a little bit
     // rootSVG is the svg containing the graph svg and the minimap svg...
     var rootSVG = d3.select(attachPoint).append("svg").attr("width", attachPoint.clientWidth).attr("height", attachPoint.clientHeight); // the attachPoint must not be an svg, as that would make it redundant. it can be for eg. document.body
-    
+
     var graphSVG = rootSVG.append("svg").attr("width", "100%").attr("height", "100%").attr("class", "graph-attach");
     //graphSVG.node().oncontextmenu = function(d) { return false; }; // graphSVG.node() it to get the svg since append returns an array of the appended svg?
     
@@ -65,10 +65,8 @@ function FLOCIDAG(attachPoint, nodes, links, /*optional*/ params) {
         }
     });
     var DAGMinimap = DirectedAcyclicGraphMinimap(DAG).width("19.5%").height("19.5%").x("80%").y("80%");
-    //var DAGHistory = List().width("15%").height("99%").x("0.5%").y("0.5%");
-    //var DAGTooltip = DirectedAcyclicGraphTooltip();
-    //var DAGContextMenu = DirectedAcyclicGraphContextMenu(graph, graphSVG);
-    var test = 5;
+
+    
     // Attach the panzoom behavior
     var refreshViewport = function() {
         var t = zoom.translate();
@@ -81,6 +79,7 @@ function FLOCIDAG(attachPoint, nodes, links, /*optional*/ params) {
     var zoom = MinimapZoom().scaleExtent([0.001, 2.0]).on("zoom", refreshViewport);
     zoom.call(this, rootSVG, minimapSVG);
     
+    var minScale;
     // A function that resets the viewport by zooming all the way out
     var resetViewport = function() {
       var curbbox = graphSVG.node().getBBox();
@@ -90,7 +89,11 @@ function FLOCIDAG(attachPoint, nodes, links, /*optional*/ params) {
       h = attachPoint.offsetHeight/scale;
       tx = ((w - bbox.width)/2 - bbox.x + 25)*scale;
       ty = ((h - bbox.height)/2 - bbox.y + 25)*scale;
+
+      minScale = scale;
+
       zoom.translate([tx, ty]).scale(scale);
+      
       refreshViewport();
     }
 
@@ -185,11 +188,9 @@ function FLOCIDAG(attachPoint, nodes, links, /*optional*/ params) {
         setupEvents();                      // Set up the node selection events
         console.log("draw events", new Date().getTime() - start);
         //start = (new Date()).getTime();
-        refreshViewport();                  // Update the viewport settings
+        //refreshViewport();                  // Update the viewport settings
         console.log("draw viewport", new Date().getTime() - start);
-        //start = (new Date()).getTime();
-        //attachContextMenus();
-        //console.log("draw contextmenus", new Date().getTime() - start);
+
         console.log("draw complete, total time=", new Date().getTime() - begin);
     }
     
@@ -248,46 +249,12 @@ function FLOCIDAG(attachPoint, nodes, links, /*optional*/ params) {
               .text(function(d) { return (d.degree > 1.0) ? "P" : d.degree; }); 
     }
 
-    // Add a play button
-//    console.log("appending play button");
-//    var playbutton = rootSVG.append("svg").attr("x", "10").attr("y", "5").append("text").attr("text-anchor", "left").append("tspan").attr("x", 0).attr("dy", "1em").text("Click To Play").on("click",
-//            function(d) {
-//        animate();
-//    });
-    
-    /*var animate = function() {
-        var startTime = new Date().getTime();
+
+    this.zoomage = function(valueSlide) {
+        var echelle = (valueSlide/100) * (1-minScale) + minScale;
         
-        // Find the min and max times
-        var max = 0;
-        var min = Infinity;
-        graphSVG.selectAll(".node").each(function(d) {
-            var time = parseFloat(d.report["Timestamp"]);
-            if (time < min) {
-                min = time;
-            }
-            if (time > max) {
-                max = time;
-            }
-        })
-        
-        var playDuration = 10000;
-        
-        var update = function() {
-            var elapsed = new Date().getTime() - startTime
-            var threshold = (elapsed * (max - min) / playDuration) + min;
-            graphSVG.selectAll(".node").attr("display", function(d) {
-                d.animation_hiding = parseFloat(d.report["Timestamp"]) < threshold ? null : true;
-                return d.animation_hiding ? "none" : "";
-            });
-            graphSVG.selectAll(".edge").attr("display", function(d) {
-                return (d.source.animation_hiding || d.target.animation_hiding) ? "none" : ""; 
-            })
-            if (elapsed < playDuration) {
-                window.setTimeout(update, 10);
-            }
-        }
-        update();
-        
-    }*/
+        zoom.scale(echelle);
+
+        refreshViewport();
+    }
 }

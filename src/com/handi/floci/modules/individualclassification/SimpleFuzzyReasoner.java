@@ -52,7 +52,6 @@ public class SimpleFuzzyReasoner {
 		crispReasoner.classifyClasses();
 		
 		if(crispReasoner.hasType(individu, clazz, false)) { //l'individu appartient à la classe expression
-			System.out.println("L'individu appartient a la clazz" + clazz.toString());
 			switch (clazz.getClassExpressionType()) {
 			
 				case OWL_CLASS: // Si l'expression est une classe elle est donc atomique = non flou (degré d'appartenance 1)  			
@@ -65,7 +64,6 @@ public class SimpleFuzzyReasoner {
 				case OBJECT_HAS_VALUE: // c'est du domaine du crisp
 				case OBJECT_ONE_OF:
 				case OBJECT_HAS_SELF:
-					System.out.println("not crisp"+ clazz.toString() +" donc 1 ");
 					return 1;
 					
 				case OBJECT_COMPLEMENT_OF:
@@ -152,7 +150,6 @@ public class SimpleFuzzyReasoner {
 				default: return 1;	
 			}
 		}
-		System.out.println("L'individu" + individu.getIRI().getFragment() +" n'appartient pas a la clazz" + clazz.toString());
 		return 0;
 	}
 	

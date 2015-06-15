@@ -33,3 +33,89 @@ body {
   -webkit-filter: drop-shadow(0px 0px 5px rgba(91,155,213, 1));
   filter: drop-shadow(0px 0px 5px rgba(91,155,213, 1));*/
 }
+
+.node.degree10 rect, .node.degree10 circle,
+.node.degree09 rect, .node.degree09 circle,
+.node.degree08 rect, .node.degree08 circle,
+.node.degree07 rect, .node.degree07 circle,
+.node.degree06 rect, .node.degree06 circle,
+.node.degree05 rect, .node.degree05 circle,
+.node.degree04 rect, .node.degree04 circle,
+.node.degree03 rect, .node.degree03 circle,
+.node.degree02 rect, .node.degree02 circle,
+.node.degree01 rect, .node.degree01 circle {
+/*	filter: "progid:DXImageTransform.Microsoft.Dropshadow(OffX=12, OffY=12, Color='#444')";
+	filter: url(#drop-shadow);
+	-webkit-filter: drop-shadow(0px 0px 5px #92A300);
+	filter: drop-shadow(0px 0px 5px #92A300);*/
+}
+
+.node.degree10 rect, .node.degree10 circle {
+	fill: #003600; /*rgb(85,107,47); */
+	stroke: #003600;
+}
+
+.node.degree09 rect, .node.degree09 circle {
+	fill: #003600; /*rgb(85,107,47); */
+	stroke: #003600;
+}
+
+.node.degree08 rect, .node.degree08 circle {
+	fill: #017500; 
+	stroke: #003600;
+}
+
+.node.degree07 rect, .node.degree07 circle {
+	fill: #017500; 
+	stroke: #003600;
+}
+
+.node.degree06 rect, .node.degree06 circle {
+	fill: #019C00; 
+	stroke: #003600;
+}
+
+.node.degree05 rect, .node.degree05 circle {
+	fill: #019C00; 
+	stroke: #003600;
+}
+
+.node.degree04 rect, .node.degree04 circle {
+	fill: #01B500; 
+	stroke: #003600;
+}
+
+.node.degree03 rect, .node.degree03 circle {
+	fill: #01B500; 
+	stroke: #003600;
+}
+
+.node.degree02 rect, .node.degree02 circle {
+	fill: #92A300; 
+	stroke: #003600;
+}
+
+.node.degree01 rect, .node.degree01 circle {
+	fill: #92A300; 
+	stroke: #003600;
+}
+
+
+.node text.degree {
+	fill: #fff;
+}
+
+.node.degree00 rect, .node.degree00 circle {
+	fill: rgb(128,0,16); /*rgb(215,9,29); /*rgb(227,80,32);*/ 
+	stroke: rgb(200, 15, 18);
+/*
+		filter: "progid:DXImageTransform.Microsoft.Dropshadow(OffX=12, OffY=12, Color='#444')";
+	filter: url(#drop-shadow);
+	-webkit-filter: drop-shadow(0px 0px 5px rgb(240,131,0));
+	filter: drop-shadow(0px 0px 5px rgb(240,131,0));*/
+}
+
+.node.degreeP rect, .node.degreeP circle {
+	fill: rgb(240,131,0);
+	stroke: rgb(227, 80, 32);
+}
